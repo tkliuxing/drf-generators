@@ -14,7 +14,7 @@ __all__ = ['BaseGenerator', 'APIViewGenerator', 'ViewSetGenerator',
 
 class BaseGenerator(object):
 
-    def __init__(self, app_config, force):
+    def __init__(self, app_config, force, fake=False):
         self.app_config = app_config
         self.force = force
         self.app = app_config.models_module
@@ -24,6 +24,7 @@ class BaseGenerator(object):
         self.models = self.get_model_names()
         self.serializers = self.get_serializer_names()
         self.fields_dict = self.get_fields_dict()
+        self.fake = fake
 
     def generate_serializers(self, depth):
         content = self.serializer_content(depth)
@@ -93,6 +94,11 @@ class BaseGenerator(object):
 
     def write_file(self, content, filename):
         name = os.path.join(os.path.dirname(self.app.__file__), filename)
+        if self.fake:
+            print(name)
+            print('-' * 20)
+            print(content)
+            return True
         if os.path.exists(name) and not self.force:
             msg = "Are you sure you want to overwrite %s? (y/n): " % filename
             prompt = input  # python3
@@ -107,31 +113,31 @@ class BaseGenerator(object):
 
 class APIViewGenerator(BaseGenerator):
 
-    def __init__(self, app_config, force):
-        super(APIViewGenerator, self).__init__(app_config, force)
+    def __init__(self, app_config, force, fake=False):
+        super(APIViewGenerator, self).__init__(app_config, force, fake)
         self.view_template = Template(API_VIEW)
         self.url_template = Template(API_URL)
 
 
 class ViewSetGenerator(BaseGenerator):
 
-    def __init__(self, app_config, force):
-        super(ViewSetGenerator, self).__init__(app_config, force)
+    def __init__(self, app_config, force, fake=False):
+        super(ViewSetGenerator, self).__init__(app_config, force, fake)
         self.view_template = Template(VIEW_SET_VIEW)
         self.url_template = Template(VIEW_SET_URL)
 
 
 class FunctionViewGenerator(BaseGenerator):
 
-    def __init__(self, app_config, force):
-        super(FunctionViewGenerator, self).__init__(app_config, force)
+    def __init__(self, app_config, force, fake=False):
+        super(FunctionViewGenerator, self).__init__(app_config, force, fake)
         self.view_template = Template(FUNCTION_VIEW)
         self.url_template = Template(FUNCTION_URL)
 
 
 class ModelViewSetGenerator(BaseGenerator):
 
-    def __init__(self, app_config, force):
-        super(ModelViewSetGenerator, self).__init__(app_config, force)
+    def __init__(self, app_config, force, fake=False):
+        super(ModelViewSetGenerator, self).__init__(app_config, force, fake)
         self.view_template = Template(MODEL_VIEW)
         self.url_template = Template(MODEL_URL)

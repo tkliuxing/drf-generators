@@ -39,6 +39,9 @@ class Command(AppCommand):
         parser.add_argument('--verbose', dest='verbose', action='store_true',
                             help='Print out logs of file generation'),
 
+        parser.add_argument('--fake', dest='fake', action='store_false',
+                            help='Generation file to stdout'),
+
     def handle_app_config(self, app_config, **options):
         if app_config.models_module is None:
             raise CommandError('You must provide an app to generate an API')
@@ -54,17 +57,18 @@ class Command(AppCommand):
             api = options['api']
             urls = options['urls']
             admin = options['admin']
+            fake = options['fake']
         else:
             raise CommandError('You must be using Django 1.11, 2.2, or 3.0')
 
         if fmt == 'viewset':
-            generator = ViewSetGenerator(app_config, force)
+            generator = ViewSetGenerator(app_config, force, fake)
         elif fmt == 'apiview':
-            generator = APIViewGenerator(app_config, force)
+            generator = APIViewGenerator(app_config, force, fake)
         elif fmt == 'function':
-            generator = FunctionViewGenerator(app_config, force)
+            generator = FunctionViewGenerator(app_config, force, fake)
         elif fmt == 'modelviewset':
-            generator = ModelViewSetGenerator(app_config, force)
+            generator = ModelViewSetGenerator(app_config, force, fake)
         else:
             message = '\'%s\' is not a valid format. ' % options['format']
             message += '(viewset, modelviewset, apiview, function)'
