@@ -1,6 +1,10 @@
 from django.template import Template, Context
 import os.path
 
+from pygments import highlight
+from pygments.lexers.python import PythonLexer
+from pygments.formatters.terminal import TerminalFormatter
+
 from drf_generators.templates.admin import ADMIN
 from drf_generators.templates.serializer import SERIALIZER
 from drf_generators.templates.apiview import API_URL, API_VIEW
@@ -99,7 +103,10 @@ class BaseGenerator(object):
             print('-' * 20)
             print(name)
             print('-' * 20)
-            print(content)
+            if filename.endswith('py'):
+                print(highlight(content, PythonLexer(), TerminalFormatter(bg='dark')))
+            else:
+                print(content)
             return True
         if os.path.exists(name) and not self.force:
             msg = "Are you sure you want to overwrite %s? (y/n): " % filename

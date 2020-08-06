@@ -22,7 +22,7 @@ setup(
 
     packages=['drf_generators', 'drf_generators.templates', 'drf_generators.management', 'drf_generators.management.commands'],
     include_package_data=True,
-    install_requires=['Django>=1.11'],
+    install_requires=['Django>=1.11', 'pygments'],
 
     classifiers=[
         'Environment :: Web Environment',
