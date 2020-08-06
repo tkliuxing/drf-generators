@@ -11,6 +11,7 @@ class {{ model.name }}Serializer(ModelSerializer):
         model = models.{{ model.name }}{% if depth != 0 %}
         depth = {{ depth }}{% endif %}
         fields = ({% for field in model.fields %}
-            {% if field == 'id' %}'pk'{% else %}'{{field}}'{% endif %},{% endfor %}
+            {% if field == 'id' %}'pk'{% else %}'{{field}}'{% endif %},{% endfor %}{% for field in model.m2m %}
+            '{{field}}',{% endfor %}
         )
 {% endfor %}"""

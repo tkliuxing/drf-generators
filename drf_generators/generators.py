@@ -84,7 +84,8 @@ class BaseGenerator(object):
         return [
             {
                 'name': m.__name__,
-                'fields': [f.name for f in m._meta.fields]
+                'fields': [f.name for f in m._meta.fields],
+                'm2m': [f.name for f in m._meta.many_to_many]
             }
             for m in self.app_config.get_models()
         ]
@@ -95,6 +96,7 @@ class BaseGenerator(object):
     def write_file(self, content, filename):
         name = os.path.join(os.path.dirname(self.app.__file__), filename)
         if self.fake:
+            print('-' * 20)
             print(name)
             print('-' * 20)
             print(content)

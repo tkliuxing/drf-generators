@@ -39,7 +39,7 @@ class Command(AppCommand):
         parser.add_argument('--verbose', dest='verbose', action='store_true',
                             help='Print out logs of file generation'),
 
-        parser.add_argument('--fake', dest='fake', action='store_false',
+        parser.add_argument('--fake', dest='fake', action='store_true',
                             help='Generation file to stdout'),
 
     def handle_app_config(self, app_config, **options):
