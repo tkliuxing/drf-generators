@@ -1,5 +1,6 @@
 from django.template import Template, Context
 import os.path
+improt sys
 
 from pygments import highlight
 from pygments.lexers.python import PythonLexer
@@ -103,7 +104,7 @@ class BaseGenerator(object):
             print('-' * 20)
             print(name)
             print('-' * 20)
-            if filename.endswith('py'):
+            if filename.endswith('py') and sys.platform != 'win32':
                 print(highlight(content, PythonLexer(), TerminalFormatter(bg='dark')))
             else:
                 print(content)
