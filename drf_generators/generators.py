@@ -1,6 +1,6 @@
 from django.template import Template, Context
 import os.path
-improt sys
+import sys
 
 from pygments import highlight
 from pygments.lexers.python import PythonLexer
